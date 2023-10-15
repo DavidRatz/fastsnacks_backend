@@ -14,6 +14,7 @@
 
 import { Sequelize } from "sequelize";
 import { client } from "./models/client.js";
+import { order } from "./models/order.js";
 
 const sequelize = new Sequelize(
     "fastsnacks",
@@ -31,5 +32,7 @@ const sequelize = new Sequelize(
   
   export const db = {};
   db.Client = client(sequelize);
+  db.Order = order(sequelize);
+  db.Client.hasOne(db.Order)
   // sync all models with database
-  sequelize.sync({ alter: false });
+  sequelize.sync({ alter: true });

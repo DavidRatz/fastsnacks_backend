@@ -1,0 +1,151 @@
+{
+	// Place your snippets for javascript here. Each snippet is defined under a snippet name and has a prefix, body and 
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the 
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"Sequelize model": {
+		"prefix": "seq-model",
+		"body": [
+			"import { DataTypes } from \"sequelize\";",
+			"",
+			"export function ${1:name}(sequelize) {",
+				"\tconst attributes = {",
+					"\t\tid: {",
+						"\t\t\ttype: DataTypes.INTEGER,",
+						"\t\t\tallowNull: false,",
+						"\t\t\tautoIncrement: true,",
+						"\t\t\tprimaryKey: true,",
+					"\t\t},",
+			  	"\t};",
+				"\t$0",
+			  	"\tconst options = {",
+					"\t\tfreezeTableName: true,",
+					"\t\t// don't add the timestamp attributes (updatedAt, createdAt)",
+					"\t\ttimestamps: false,",
+			  	"\t};",
+			  	"\treturn sequelize.define(\"${2:name2}\", attributes, options);"
+			"}"
+		],
+		"description": "Create seq model"
+	},
+	"Sequelize repo": {
+		"prefix": "seq-repo",
+		"body": [
+			"import { db } from \"../dbconfig.js\";",
+			"",
+			"export const getAll = async () => {",
+				"\treturn await db.${1:name}.findAll();",
+			"};",
+			"",
+			"export const find${1:name}ById = async (id) => {",
+				"\treturn await db.${1:name}.findByPk(id);",
+			"};",
+			"",
+			"export const create${1:name} = async (${2:name2}) => {",
+				"\treturn await db.${1:name}.create(${2:name2});",
+			"};",
+			"",
+			"export const update${1:name} = async (id, ${2:name2}) => {",
+				"\treturn await db.${1:name}.update(	",
+					"\t\t${2:name2},{ where: { Id: id } });",
+			"};",
+			"",
+			"export const deleteOne${1:name} = async (id) => {",
+				"\treturn await db.${1:name}.destroy({",
+					"\t\twhere: { Id: id },",
+				"\t});",
+			"};",
+		],
+		"description": "Create seq repo"
+	},
+	"node route crud": {
+		"prefix": "route-node-crud",
+		"body": [
+			"import { Router } from 'express';",
+			"",
+			"var router = Router();",
+			"import { get${1:name}s, get${1:name}, add${1:name}, put${1:name}, delete${1:name}} from '../controllers/${2:name2}.js';",
+			"",
+			"router.get('/', get${1:name}s);",
+			"",
+			"router.get('/:id', get${1:name})",
+			"",
+			"router.post('/', add${1:name})",
+			"",
+			"router.put('/:id', put${1:name});",
+			"",
+			"router.patch('/:id', put${1:name});",
+			"",
+			"router.delete('/:id', delete${1:name});",
+			"",
+			"export default router;",
+		],
+		"description": "Create node route crud"
+	},
+	"node controller crud": {
+		"prefix": "controller-node-crud",
+		"body": [
+			"import { getAll, find${1:name}ById, create${1:name}, update${1:name}, deleteOne${1:name} } from \"../repositories/${2:name2}.js\";",
+			"",
+			"export const get${1:name}s = (req, res) => {",
+				"\tgetAll().then(r =>  {",
+					"\t\tif(!r){",
+						"\t\t\tthrow new Error('${1:name}s not found');",
+					"\t\t}",
+					"\t\tres.send(r);",
+				"\t}).catch((err) => res.status(400).json(err.message));",
+			"}",
+			"",
+			"export const get${1:name} =  (req, res) => {",
+				"\tconst {id} = req.params;",
+				"\tfind${1:name}ById(id).then(r =>  {",
+					"\t\tif(!r){",
+						"\t\t\tthrow new Error('${1:name} not found');",
+					"\t\t}",
+					"\t\tres.send(r);",
+				"\t}).catch((err) => res.status(400).json(err.message));",
+			"}",
+			"",
+			"export const add${1:name} = (req, res) => {",
+				"\tconst ${2:name2} = { ...req.body };",
+
+				"\tcreate${1:name}(${2:name2}).then(r =>  {",
+				"\t\tres.send(`${2:name2} added to the database`);",
+				"\t}).catch((err) => res.status(400).json(err.message));",
+
+			"}",
+			"",
+			"export const put${1:name} = (req, res) => {",
+				"\tconst { id } = req.params;",
+				"\tconst ${2:name2} = { ...req.body };",
+				"\tupdate${1:name}(id, ${2:name2}).then(r =>  {",
+					"\t\tif(r==0){",
+						"\t\t\tthrow new Error('${1:name} not found');",
+					"\t\t}",
+					"\t\tres.send(`${2:name2} updated to the database`);",
+				"\t}).catch((err) => res.status(400).json(err.message));",
+			"}",
+			"",
+			"export const delete${1:name} = (req, res) => {",
+				"\tconst { id } = req.params;",
+				"\tdeleteOne${1:name}(id).then(r =>  {",
+					"\t\tif(r==0){",
+					"	\t\t\tthrow new Error('${1:name} not found');",
+					"\t\t}",
+					"\t\tres.send(`${2:name2} deleted from the database`);",
+				"\t}).catch((err) => res.status(400).json(err.message));",
+			"}",
+			"$0"
+		],
+		"description": "Create node controller crud"
+	},
+}

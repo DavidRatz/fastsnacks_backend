@@ -1,7 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
 import { getAll, findClientById, createClient, updateClient, deleteOneClient } from "../repositories/client.js";
-
-let users = [];
 
 export const getClients = (req, res) => {
   getAll().then(r =>  {
