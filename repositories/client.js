@@ -15,49 +15,27 @@ export const createClient = async (client) => {
 };
 
 export const updateClient = async (id, client) => {
-    findClientById(id).then( r => {
-        //try {
-            if(!r){
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  reject(new Error('Async Fn error!'));
-                }, 1000);
-              });
-            }
-            return r.update(client);
-        //} catch (error) {
-        //     console.log(error);
-        //     return new Error('Client not found');
-            
-        //}
-        
-    });
+    // findClientById(id).then( r => {
+    //     if(r){
+    //         r.update(client);
+    //         return r;
+    //     }
+    // });
 
-    /* await db.Client.update(
+    return await db.Client.update(
         client,
         {
-        where: {
-            Id: client.id,
-        },
+            where: {
+                Id: id,
+            },
         }
     );
-    return client; */
     
 };
 
-export const updateSomeParamClient = async (id, client) => {
-    findClientById(id).then(async r => {
-        return await r.update(client);
-    });    
-};
-
 export const deleteOneClient = async (id) => {
-    await db.Client.destroy({
+    return await db.Client.destroy({
         where: { Id: id },
-    }).then(r => {
-        if(r == 0){
-            return new Error(`Uh oh... I didn't expect RED!`);
-        }
     });
 };
   
