@@ -40,18 +40,6 @@ export const putClient = (req, res) => {
   }).catch((err) => res.status(400).json(err.message));
 }
 
-export const patchClient = (req, res) => {
-  const { id } = req.params;
-  const client = { ...req.body };
-
-  updateClient(id, client).then(r =>  {
-    if(r==0){
-      throw new Error('Client not found');
-    }
-    res.send(`User ${client.firstName} updated to the database`);
-  }).catch((err) => res.status(400).json(err.message));
-}
-
 export const deleteClient = (req, res) => {
     const { id } = req.params;
     deleteOneClient(id).then(r =>  {

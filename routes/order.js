@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 var router = Router();
-import { getOrders, getOrder, addOrder, putOrder, patchOrder, deleteOrder} from '../controllers/order.js';
+import { getOrders, getOrder, addOrder, putOrder, deleteOrder} from '../controllers/order.js';
 
 router.get('/', getOrders);
 
@@ -11,7 +11,7 @@ router.post('/', addOrder)
 
 router.put('/:id', putOrder);
 
-router.patch('/:id', patchOrder);
+router.patch('/:id', putOrder);
 
 router.delete('/:id', deleteOrder);
 
